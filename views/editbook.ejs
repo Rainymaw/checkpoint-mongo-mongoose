@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form class="edit-book" enctype="multipart/form-data">
+      <label for="">Cover</label>
+      <input type="file" name="cover" id="" value="<%= book.cover %>" />
+      <label for="">Title</label>
+      <input type="text" name="title" value="<%= book.titre %>" />
+      <label for="">Year</label>
+      <input type="text" name="year" value="<%= book.année %>" />
+      <label for="">Description</label>
+      <input type="text" name="description" value="<%= book.description %>" />
+      <label for="">Price</label>
+      <input type="text" name="price" value="<%= book.prix %>" />
+      <input type="submit" value="Send" />
+    </form>
+    <script>
+      let form = document.querySelector(".edit-book");
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        console.log(event);
+        const formData = new FormData(event.target);
+        const title = formData.get("title");
+        const description = formData.get("description");
+        const cover = formData.get("cover");
+        console.log(cover);
+
+        const price = formData.get("price");
+        const year = formData.get("year");
+        const response = await fetch(`/editbook/<%= book._id %>`, {
+          method: "put",
+
+          body: JSON.stringify({
+            title: title,
+            description: description,
+            cover: cover,
+            covername: cover.name,
+            price: price,
+            year: year,
+          }),
+        });
+        if (response.ok) {
+          console.log(response);
+          window.location.href = "/books";
+        }
+      });
+    </script>
+  </body>
+</html>

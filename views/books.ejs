@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!--Cette page va recevoir une liste qui va contenir plusieurs livres, que l'on va afficher à l'écran-->
+    <div class="books">
+      <% books.forEach(book=>{ %>
+      <div class="book-card">
+        <img src="<%= book.cover %>" />
+        <div class="book-description">
+          <h4 class="book-title"><%= book.titre %></h4>
+          <p class="book-blurb"><%= book.description %></p>
+          <span class="book-year"> <%= book.année %> </span>
+          <p class="book-price"><%= book.prix %></p>
+          <a href="/books/<%= book._id %>"
+            ><input type="button" value="Display Book"
+          /></a>
+          <a href="/editbook/<%= book._id %>"
+            ><input type="button" value="Edit" />
+          </a>
+          <input
+            type="button"
+            class="delete"
+            value="Delete"
+            data-id="<%=book._id %>"
+          />
+        </div>
+      </div>
+      <% }) %>
+    </div>
+  </body>
+  <script>
+    let buttons = document.querySelectorAll(".delete");
+    buttons.forEach((button) => {
+      button.addEventListener("click", async () => {
+        let id = button.dataset.id;
+        const response = await fetch(`/books/${id}`, {
+          method: "DELETE",
+          headers: { "Content-type": "application/json" },
+        });
+      });
+    });
+  </script>
+</html>
